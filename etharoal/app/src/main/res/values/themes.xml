@@ -1,0 +1,12 @@
+<resources>
+    <!-- Window theme only: dark from the first frame. All UI theming is done in Compose. -->
+    <style name="Theme.Etheroal" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/ink</item>
+    </style>
+    <!-- The assistant overlay: see-through, so the app the owner was in stays visible behind it. -->
+    <style name="Theme.Etheroal.Overlay" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.InputMethod</item>
+    </style>
+</resources>

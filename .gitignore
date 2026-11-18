@@ -1,0 +1,8 @@
+.gstack/
+.DS_Store
+
+# Local tooling, not part of the app
+.idea/
+.claude/
+.agents/
+skills-lock.json

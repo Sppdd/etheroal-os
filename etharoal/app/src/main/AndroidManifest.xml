@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Tasks keep running, with a status notification, after the owner leaves Etheroal. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- set_alarm / set_timer tools. -->
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <!-- Voice conversations (Gemini Live). Asked for the first time the mic is used. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- As a home screen Etheroal lists the apps that have a launcher icon, and only those. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+
+    <!-- allowBackup is off: notification content, memory and the vault must never land in a cloud backup. -->
+    <application
+        android:name=".EtheroalApp"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="false"
+        android:theme="@style/Theme.Etheroal"
+        tools:targetApi="31">
+
+        <!-- Also a home screen (HOME + DEFAULT). Uninstalling Etheroal hands home back to the
+             phone's own launcher; nothing about the system is changed. -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:stateNotNeeded="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Reads notifications for private, on-device triage. Only the system can bind to it. -->
+        <service
+            android:name=".triage.NotificationCaptureService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- Carries out tasks in other apps. Off until the user enables it in Accessibility
+             settings; only the system can bind to it. -->
+        <service
+            android:name=".agent.EtheroalAccessibilityService"
+            android:exported="true"
+            android:label="@string/agent_service_label"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/agent_service" />
+        </service>
+
+        <!-- Digital assistant: long-press power or home opens Etheroal over the current app. -->
+        <service
+            android:name=".assist.EtheroalAssistService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_VOICE_INTERACTION">
+            <meta-data android:name="android.voice_interaction" android:resource="@xml/assistant" />
+            <intent-filter>
+                <action android:name="android.service.voice.VoiceInteractionService" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".assist.EtheroalAssistSessionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_VOICE_INTERACTION" />
+        <service
+            android:name=".assist.EtheroalRecognitionService"
+            android:exported="true"
+            android:label="@string/app_name">
+            <meta-data android:name="android.speech" android:resource="@xml/recognizer" />
+            <intent-filter>
+                <action android:name="android.speech.RecognitionService" />
+            </intent-filter>
+        </service>
+        <activity
+            android:name=".assist.AssistActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.etheroal.os.assist"
+            android:theme="@style/Theme.Etheroal.Overlay"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- The vault's unlock prompt, shown over whatever app is in front. -->
+        <activity
+            android:name=".vault.VaultUnlockActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- Runs tasks the owner started; not exported, only Etheroal starts it. -->
+        <service
+            android:name=".agent.AgentService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Carries out a task the user asked the on-phone assistant to do, across apps, with a visible Stop control" />
+        </service>
+    </application>
+
+</manifest>

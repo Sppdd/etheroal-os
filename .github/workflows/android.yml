@@ -1,0 +1,27 @@
+name: Android CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: etharoal
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      # The routing and privacy rules are pure Kotlin, so they run without Android or Firebase config.
+      - name: Routing core unit tests
+        # The app module needs google-services.json, which is never committed; the core modules hold the rules.
+        run: ./gradlew :core:ai:test :core:agent:test :core:voice:test --console=plain

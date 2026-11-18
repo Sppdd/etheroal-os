@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Lets Etheroal be chosen as the digital assistant (Settings › Default apps › Digital assistant). -->
+<voice-interaction-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:recognitionService="com.etheroal.os.assist.EtheroalRecognitionService"
+    android:sessionService="com.etheroal.os.assist.EtheroalAssistSessionService"
+    android:supportsAssist="true"
+    android:supportsLaunchVoiceAssistFromKeyguard="false" />

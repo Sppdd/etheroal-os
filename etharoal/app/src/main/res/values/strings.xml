@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Etheroal</string>
+    <string name="agent_service_label">Etheroal tasks</string>
+    <string name="agent_service_summary">Lets Etheroal carry out a task you ask for in other apps.</string>
+    <string name="agent_service_description">When you ask Etheroal to do something on your phone, it reads the screen and taps, types and scrolls for you until the task is done. It acts only during a task you started, shows a banner with a Stop button the whole time, and asks before it sends, pays, deletes or signs in. It never types into password fields and does not work in Settings. The screens it reads during a task are sent to Google Gemini, with email addresses, phone numbers, links and long numbers masked. Outside a task it reads nothing.</string>
+</resources>

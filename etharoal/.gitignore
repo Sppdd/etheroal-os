@@ -1,0 +1,15 @@
+*.iml
+.gradle
+.kotlin
+/local.properties
+local.properties
+/.idea
+.DS_Store
+build/
+/captures
+.externalNativeBuild
+.cxx
+# Firebase client config: fetch your own with `firebase apps:sdkconfig ANDROID`
+google-services.json
+*.jks
+*.keystore

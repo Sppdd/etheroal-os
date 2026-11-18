@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bundled defaults. The same keys can be changed in the Firebase console without an app release. -->
+<defaultsMap>
+    <entry><key>cloud_model_fast</key><value>gemini-3.5-flash-lite</value></entry>
+    <entry><key>cloud_model_agent</key><value>gemini-3.8-flash</value></entry>
+    <entry><key>cloud_model_live</key><value>gemini-3.1-flash-live-preview</value></entry>
+    <!-- CLOUD | PRIVATE. What a new install starts with; the user's own choice always wins. -->
+    <entry><key>default_privacy_mode</key><value>CLOUD</value></entry>
+    <entry><key>agent_max_steps</key><value>25</value></entry>
+    <entry><key>agent_verify</key><value>true</value></entry>
+    <entry><key>agent_vision</key><value>true</value></entry>
+    <!-- STABLE | PREVIEW | PREVIEW_FAST. PREVIEW selects Gemini Nano 4 Full where the device supports it. -->
+    <entry><key>on_device_model_option</key><value>PREVIEW</value></entry>
+    <entry><key>cloud_enabled</key><value>true</value></entry>
+    <entry><key>on_device_input_token_budget</key><value>3000</value></entry>
+    <entry><key>busy_retries</key><value>3</value></entry>
+    <entry><key>limited_use_app_check_tokens</key><value>true</value></entry>
+    <!-- Comma separated task:MODE pairs, e.g. quick_reply:ONLY_IN_CLOUD. Never applies to private tasks. -->
+    <entry><key>mode_overrides</key><value></value></entry>
+</defaultsMap>
